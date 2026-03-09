@@ -9,6 +9,7 @@ editor: visual
 ## Set up
 
 ```{r}
+#| message: false
 library(tidyverse) # general use
 library(here) # file organization
 library(janitor) # cleaning data frames
@@ -55,6 +56,7 @@ ggplot(data = personal_data_clean,
 
 ```{r}
 #| label: correlation matrix
+#| warning: false
 ggcorr(data = personal_data_clean,
        method = c("pairwise", "spearman"),
        low = "#8500E9",
@@ -72,10 +74,10 @@ ggplot(data = personal_data_clean,
        aes(x = date_mutate)) + 
   geom_line(aes(y = class_hrs),
             color = "#A0A0A0",
-            size = 1.5) +
+            linewidth = 1) +
   geom_line(aes(y = game_min/coeff),
             color = "#0F0F0F",
-            size = 1.5) +
+            linewidth = 1) +
   scale_y_continuous(name = "Time in lecture (hrs)",
                      sec.axis = sec_axis(~ . * coeff, 
                                          name = "Time tracked on game (min)")) +
@@ -86,16 +88,16 @@ ggplot(data = personal_data_clean,
          panel.background = element_rect(fill = "#F5F3EF"),
          panel.border = element_rect(fill = NA, 
                                      color = "#B4A073", 
-                                     size = 5),
-         axis.title.x = element_text(size = 20,
+                                     linewidth = 5),
+         axis.title.x = element_text(size = 40,
                                    color = "#39240A"),
-       axis.title.y.left = element_text(size = 15,
+       axis.title.y.left = element_text(size = 35,
                                    color = "#A0A0A0"),
-       axis.title.y.right = element_text(size = 15,
+       axis.title.y.right = element_text(size = 35,
                                    color = "#0F0F0F"),
-       axis.text.x = element_text(size = 14,
+       axis.text.x = element_text(size = 30,
                                    color = "#39240A"),
-       axis.text.y = element_text(size = 15,
+       axis.text.y = element_text(size = 35,
                                    color = "#39240A"),
        axis.line = element_blank()
        )
