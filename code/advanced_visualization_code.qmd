@@ -17,6 +17,13 @@ library(hexbin)
 library(ggpattern)
 library(ggthemes)
 library(magick)
+library(patchwork)
+library(showtext)
+library(sysfonts)
+font_add_google(name = "Bellefair", # Name of the font on the Google Fonts site
+                family = "belle") # Name to call the font
+showtext_auto() # automatically use showtext to render text
+
 personal_data <- read_csv(here("data",
                                "personal_data_03072026.csv"))
 
@@ -35,9 +42,9 @@ personal_data_clean <- personal_data |> # save personal data as object
 
 ```{r}
 #| label: hexplot
-ggplot(data = personal_data,
-       aes(x = time_in_class_lecture_hrs,
-           y = time_with_mobile_game_active_min)) +
+ggplot(data = personal_data_clean,
+       aes(x = class_hrs,
+           y = game_min)) +
   geom_hex() +
   theme_void() +
   theme(legend.position = "none")
@@ -58,8 +65,55 @@ ggplot(data = personal_data_clean,
 # Visualization 3.
 
 ```{r}
+coeff <- 18
+
 ggplot(data = personal_data_clean,
-       aes(x = date_mutate,
-           y = game_min)) + 
-  geom_line()
+       aes(x = date_mutate)) + 
+  geom_line(aes(y = class_hrs),
+            color = "#A0A0A0",
+            size = 2) +
+  geom_line(aes(y = game_min/coeff),
+            color = "#0F0F0F",
+            size = 2) +
+  scale_y_continuous(name = "Time in lecture (hrs)",
+                     sec.axis = sec_axis(~ . * coeff, 
+                                         name = "Time tracked on game (min)")) +
+  labs(x = "Date") +
+  theme_classic() +
+   theme(text = element_text(family = "belle"),
+         plot.background = element_rect(fill = "#F5F3EF"),
+         panel.background = element_rect(fill = "#F5F3EF"),
+         panel.border = element_rect(fill = NA, 
+                                     color = "#B4A073", 
+                                     size = 5),
+         axis.title.x = element_text(size = 20,
+                                   color = "#39240A",
+                                   face = "bold"),
+       axis.title.y = element_text(size = 15,
+                                   color = "#39240A",
+                                   face = "italic"),
+       axis.text.x = element_text(size = 14,
+                                   color = "#39240A",
+                                   face = "italic"),
+       axis.text.y = element_text(size = 15,
+                                   color = "#39240A",
+                                   face = "italic"),
+       axis.line = element_blank()
+       )
 ```
+
+## Infographic Planning Notes
+
+**Fonts** - Brothers, Sabbath Black
+
+**Colors** - logo: \~gold "C6A06E" , white "FFFFFF" ;
+
+Box border: \~wheat"B4A073" Box interior: \~cream "F5F3EF"
+
+Stripe dark "C2B28E" Stripe light "CDC0A2" Perimeter \~black "0F0F0F"
+
+Symbol accents: \~wheat" B4A073" \~black "0F0F0F" \~cream "F5F3EF" \~grey "A0A0A0
+
+Font \~brown "39240A"
+
+Shiny button \~Dgrey "333333" \~black "0F0F0F"
