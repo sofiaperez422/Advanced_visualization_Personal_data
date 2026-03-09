@@ -20,6 +20,7 @@ library(magick)
 library(patchwork)
 library(showtext)
 library(sysfonts)
+library(GGally)
 font_add_google(name = "Bellefair", # Name of the font on the Google Fonts site
                 family = "belle") # Name to call the font
 showtext_auto() # automatically use showtext to render text
@@ -41,7 +42,7 @@ personal_data_clean <- personal_data |> # save personal data as object
 # Visualization 1.
 
 ```{r}
-#| label: hexplot
+#| label: hexplot class+game
 ggplot(data = personal_data_clean,
        aes(x = class_hrs,
            y = game_min)) +
@@ -53,28 +54,28 @@ ggplot(data = personal_data_clean,
 # Visualization 2.
 
 ```{r}
-ggplot(data = personal_data_clean,
-       aes(x = class_hrs,
-           y = game_min)) + 
-  geom_area_pattern(pattern = "gradient",
-                    fill = "#00000010",
-                    pattern_fill  = "#00000010",
-                    pattern_fill2 = "blue")
+#| label: correlation matrix
+ggcorr(data = personal_data_clean,
+       method = c("pairwise", "spearman"),
+       low = "#8500E9",
+       high = "#56E900",
+       legend.position = "left")
 ```
 
 # Visualization 3.
 
 ```{r}
+#| label: time series class+game
 coeff <- 18
 
 ggplot(data = personal_data_clean,
        aes(x = date_mutate)) + 
   geom_line(aes(y = class_hrs),
             color = "#A0A0A0",
-            size = 2) +
+            size = 1.5) +
   geom_line(aes(y = game_min/coeff),
             color = "#0F0F0F",
-            size = 2) +
+            size = 1.5) +
   scale_y_continuous(name = "Time in lecture (hrs)",
                      sec.axis = sec_axis(~ . * coeff, 
                                          name = "Time tracked on game (min)")) +
@@ -87,17 +88,15 @@ ggplot(data = personal_data_clean,
                                      color = "#B4A073", 
                                      size = 5),
          axis.title.x = element_text(size = 20,
-                                   color = "#39240A",
-                                   face = "bold"),
-       axis.title.y = element_text(size = 15,
-                                   color = "#39240A",
-                                   face = "italic"),
+                                   color = "#39240A"),
+       axis.title.y.left = element_text(size = 15,
+                                   color = "#A0A0A0"),
+       axis.title.y.right = element_text(size = 15,
+                                   color = "#0F0F0F"),
        axis.text.x = element_text(size = 14,
-                                   color = "#39240A",
-                                   face = "italic"),
+                                   color = "#39240A"),
        axis.text.y = element_text(size = 15,
-                                   color = "#39240A",
-                                   face = "italic"),
+                                   color = "#39240A"),
        axis.line = element_blank()
        )
 ```
