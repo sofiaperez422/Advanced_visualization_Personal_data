@@ -1,0 +1,49 @@
+---
+title: "Advanced Visualization Code"
+author: "Sofia Perez"
+date: "2026-03-06"
+format: html
+editor: visual
+---
+
+## Set up
+
+```{r}
+library(tidyverse) # general use
+library(here) # file organization
+library(janitor) # cleaning data frames
+library(readxl) # reading excel files
+library(hexbin)
+library(ggpattern)
+
+personal_data <- read_csv(here("data",
+                               "personal_data_03072026.csv")) |> 
+  clean_names() + # save personal data as object and clean column names
+```
+
+# Visualization 1.
+
+```{r}
+#| label: hexplot
+ggplot(data = personal_data,
+       aes(x = time_in_class_lecture_hrs,
+           y = time_with_mobile_game_active_min)) +
+  geom_hex() +
+  theme_bw()
+```
+
+
+# Visualization 2.
+
+```{r}
+ggplot(data = personal_data,
+       aes(x = time_in_class_lecture_hrs,
+           y = time_with_mobile_game_active_min)) + 
+  geom_area_pattern(pattern = "gradient",
+                    fill = "#00000010",
+                    pattern_fill  = "#00000010",
+                    pattern_fill2 = "blue")
+```
+
+
+# Visualization 3.
