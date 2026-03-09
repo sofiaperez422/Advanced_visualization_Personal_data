@@ -15,10 +15,20 @@ library(janitor) # cleaning data frames
 library(readxl) # reading excel files
 library(hexbin)
 library(ggpattern)
-
+library(ggthemes)
+library(magick)
 personal_data <- read_csv(here("data",
-                               "personal_data_03072026.csv")) |> 
-  clean_names() + # save personal data as object and clean column names
+                               "personal_data_03072026.csv"))
+
+personal_data_clean <- personal_data |> # save personal data as object
+  clean_names() |> # clean column names
+  mutate(date_mutate = as.Date.character(date, format = "%m/%d/%Y"), # mutate date column into 
+         game_min = time_with_mobile_game_active_min,
+         class_hrs = time_in_class_lecture_hrs,
+         study_hrs = time_spent_in_study_spaces_hrs,
+         friends_hrs = time_spent_at_friends_hrs,
+         assignments = number_of_assignments_due) |>
+  select(date_mutate, game_min, class, class_hrs, study_hrs, friends_hrs, assignments)
 ```
 
 # Visualization 1.
@@ -29,21 +39,27 @@ ggplot(data = personal_data,
        aes(x = time_in_class_lecture_hrs,
            y = time_with_mobile_game_active_min)) +
   geom_hex() +
-  theme_bw()
+  theme_void() +
+  theme(legend.position = "none")
 ```
-
 
 # Visualization 2.
 
 ```{r}
-ggplot(data = personal_data,
-       aes(x = time_in_class_lecture_hrs,
-           y = time_with_mobile_game_active_min)) + 
+ggplot(data = personal_data_clean,
+       aes(x = class_hrs,
+           y = game_min)) + 
   geom_area_pattern(pattern = "gradient",
                     fill = "#00000010",
                     pattern_fill  = "#00000010",
                     pattern_fill2 = "blue")
 ```
 
-
 # Visualization 3.
+
+```{r}
+ggplot(data = personal_data_clean,
+       aes(x = date_mutate,
+           y = game_min)) + 
+  geom_line()
+```
