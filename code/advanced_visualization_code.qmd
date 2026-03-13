@@ -58,23 +58,23 @@ ggplot(data = personal_data_clean, # create base ggplot layer with clean df
                              b = 1,
                              unit = "cm"),
          plot.background = element_rect(fill = "#F5F3EF")) + # set background color
-  geom_curve(x = 2.25,
-             y = 50,
-             xend = 1.5,
-             yend = 45,
-             curvature = 0.6,
-             angle = 70,
-             linewidth = 2,
-             arrow = arrow(length = unit(0.3, "cm")),
-             lineend = "round",
-             col = "#B4A073") +
-  annotate("text",
-           x = 2.6,
-           y = 47,
-           label = "Bin of count values",
-           color = "#39240A",
-           size = 15,
-           family = "belle")
+  geom_curve(x = 2.25, # x-axis start point
+             y = 50, # y-axis start point
+             xend = 1.5, # x-axis end point
+             yend = 45, # y-axis end point
+             curvature = 0.6, # positive curve of 0.6 magnitude
+             angle = 70, # angle where curve happens
+             linewidth = 2, # customize width
+             arrow = arrow(length = unit(0.5, "cm")), # add arrow to line and sest size
+             lineend = "round", # customize end of line
+             col = "#B4A073") + # set color
+  annotate("text", # add in plot text annotation
+           x = 2.53, # x coordinate for text
+           y = 46, # y coordinate for text
+           label = "Plot area divided into bins", # set text label
+           color = "#39240A", # set color
+           size = 12, # set size
+           family = "belle") # set font
 ```
 
 # Visualization 2.
@@ -89,7 +89,7 @@ ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
        low = "#8500E9", # set negative correlation color
        mid = "#C0CDFF", # set close to 0 correlation color
        high = "#56E900") + # set positive correlation color
-   theme_minimal(base_family = "belle") + # set theme to minimal and base text font
+  theme_minimal(base_family = "belle") + # set theme to minimal and base text font
   theme(text = element_text(size = 30), # set font size
         plot.background = element_rect(fill = "#F5F3EF"), # set background color
         legend.position = "top") # put legend at top
@@ -113,23 +113,23 @@ ggplot(data = personal_data_clean, # create base ggplot layer with clean df
                      sec.axis = sec_axis(~ . * coeff, # scale second y-axis to minutes and name it accordingly
                                          name = "Time tracked on game (min)")) +
   theme_classic() + # set theme to classic
-   theme(text = element_text(family = "belle"), # set base font
-         plot.background = element_rect(fill = "#F5F3EF"), # set entire background color
-         panel.background = element_rect(fill = "#F5F3EF"), # set plot background color
-         panel.border = element_rect(fill = NA, # create border, set color and width
-                                     color = "#B4A073", 
-                                     linewidth = 5),
-         axis.title.x = element_text(size = 40, # set size and color of bottom axis
+  theme(text = element_text(family = "belle"), # set base font
+        plot.background = element_rect(fill = "#F5F3EF"), # set entire background color
+        panel.background = element_rect(fill = "#F5F3EF"), # set plot background color
+        panel.border = element_rect(fill = NA, # create border, set color and width
+                                    color = "#B4A073", 
+                                    linewidth = 5),
+        axis.title.x = element_text(size = 40, # set size and color of bottom axis
+                                    color = "#39240A"),
+        axis.title.y.left = element_text(size = 35, # set size and color of left axis
+                                         color = "#A0A0A0"),
+        axis.title.y.right = element_text(size = 35, # set size and color of right axis
+                                          color = "#0F0F0F"),
+        axis.text.x = element_text(size = 30, # set size and color of x-axis ticks text
                                    color = "#39240A"),
-       axis.title.y.left = element_text(size = 35, # set size and color of left axis
-                                   color = "#A0A0A0"),
-       axis.title.y.right = element_text(size = 35, # set size and color of right axis
-                                   color = "#0F0F0F"),
-       axis.text.x = element_text(size = 30, # set size and color of x-axis ticks text
+        axis.text.y = element_text(size = 35, # set size and color of y-axis ticks text
                                    color = "#39240A"),
-       axis.text.y = element_text(size = 35, # set size and color of y-axis ticks text
-                                   color = "#39240A"),
-       axis.line = element_blank() # remove axis lines
+        axis.line = element_blank() # remove axis lines
        )
 ```
 
