@@ -149,7 +149,7 @@ plot(timeseries) # display plot output
 
 ### Infographic planning brainstorm notes
 
-**Fonts** - Brothers, Sabbath Black
+**Fonts** - Brothers, Sabbath Black, Bellefair
 
 **Colors** - logo: \~gold "C6A06E" , white "FFFFFF" ;
 
@@ -167,14 +167,18 @@ Shiny button \~Dgrey "333333" \~black "0F0F0F"
 
 ## General Information about design and visualization
 
-patterns highlighting in each + why
+Visualization 1 is a hexbin density plot that highlights the amount of time I spend in lecture on the x-axis to the amount of tracked time with the game on the y-axis. Lighter colors represent a higher count of observations in the bin for that area of the plot, and the highest count is 3, represented by the lightest grey color. I wanted to have some sort of "scatter" chart that had different colored points across the plot area, and I came across this visualization type on Yan Holtz's "From Data to Viz" website. Although, due to the lack of observation points, the density plot did not turn out quite the same as what was advertised, but I still enjoy the look of it.
 
-outside of data viz, what aesthetic (color, font, arrangement) choices and why? What way do your choices contribute to a conmpelling/interesting narrative?
+Visualization 2 is a correlation matrix that visually represents the correlation between all continuous variables that I measured, including (from left to right) the time spent on the game, in class, in study spaces, and at friends, as well as the number of assignments due for the day. I found this correlogram visualization also on Yan Holtz's "From Data to Viz" website and thought it would be interesting to see how each variable may relate to the time I spent on the game with correlation, but also how each variable may relate among each other.
+
+Visualization 3 is a time series of two variables, time tracked on the game and time spent in lecture, which I of course found from Yan Holtz's website, but this time the "R Graph Gallery". I chose to once again visualize the same "game" and "class" variables as in visualization 1, except this time with the function of time playing a role in the visual story. As I was collecting my data, I knew with passing weeks that I was opening my mobile game on my phone less and less often and for shorter periods of time. Further, I know that school workload is directly to blame, not only because it was something I actively thought about, but also because this is highlighted in visualization 2 with moderate negative correlation represented between number of assignments due and game time. So, I wanted to express the data with the "date" column of my data.
+
+Practically all aesthetic choices like color, font, background, etc. stem directly from aesthetics in the mobile game that my data is about, mostly from "Menu" aesthetics of the game. This choice creates a more meaningful narrative of the visualization as it directly ties to the data and captures the same feelings that the game would emit in style and presentation.
 
 ## Sources and process
 
-for each viz describe examples that imspired that viz (cite author)
+For my first visualization of a 2D density plot using hexbins, I was inspired by the simplicity of Nicola Rennie's Simpsons word counts that was followed with a descriptive explanation that gave good context on the visualization, and I wanted to do something similar of creating something visually interesting that requires context to understand. All three visualizations take inspiration from Victor Gauto's D&D visualization containing custom font that strongly relates to the theme of the data content itself, which I decided to use a font that closely resembles a font in the mobile game. I also was inspired to do a time series plot by Georgio Karamanis's Himalayan expedition data that was represented across time.
 
-describe coding process, ex. "did you have to clean up/sammarize data before you started? Which geoms did you start with? What geoms did u end up using and why?
+When setting up my data, I had originally been only using the original data frame that I created for my personal data, but at some point I decided to clean the data with a new frame where I also only selected the variables I was planning on using. Even within this cleaning of data I made many changes over time as to how I was cleaning it and re-naming the columns and such, and this was because (after *much* trial and error) I was unable to figure out how to customize the variable labels for my correlation matrix and had to set the column names to one-word descriptions. My set up library also changed a lot as I figured out which visualizations I wanted to keep and which of the packages I installed and opened I would actually need. Some geoms I had tried out but decided against were geom_area for an attempted area and stacked area plot with gradient color, geom_point for a classic scatterplot, and geom_density for a gradient smear of colors. I decided on the geom visualizations that I currently have selected because I like the clean look as some of the other ones looked too messy or unpleasant. I had a lot of trial and error with importing the font and then actually applying it to each of the visualizations, and again with exporting the visualizations as .PNGs with code and putting it into the appropriate folder. I would say most of my time coding was researching + trialing how to customize the plots in different ways and the specific wording of functions for things to actually work.
 
-describe tools used: other people's code? Google/StackOverflow?
+The tools I used were "Help" in RStudio, visualization codes on Yan Holtz's websites, and google with websites like "Statology", "R CODER", "GeeksforGeeks", and blog websites specialized for code or similar topics.
