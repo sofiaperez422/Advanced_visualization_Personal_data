@@ -17,3 +17,5 @@ The images folder includes the finalized visualizations saved as png images.
 ## Rendered output
 
 File: https://sofiaperez422.github.io/Advanced_visualization_Personal_data/code/advanced_visualization_code.html
+
+Infographic: 
