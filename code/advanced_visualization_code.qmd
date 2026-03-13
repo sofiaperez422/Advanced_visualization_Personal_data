@@ -43,7 +43,7 @@ personal_data_clean <- personal_data |> # create clean data frame of personal da
 #| label: hexplot class+game
 #| fig-height: 6 # set custom figure height
 #| fig-width: 6 # set custom figure width
-ggplot(data = personal_data_clean, # create base ggplot layer with clean df
+hexplot <- ggplot(data = personal_data_clean, # create base ggplot layer with clean df
        aes(x = Class, # set x-axis
            y = Game)) + # set y-axis
   geom_hex(bins = 11) + # customize bin number  (to smallest # that won't cut off geom shape near border)
@@ -75,6 +75,15 @@ ggplot(data = personal_data_clean, # create base ggplot layer with clean df
            color = "#39240A", # set color
            size = 12, # set size
            family = "belle") # set font
+ 
+png("vizualization1_hexplot.png", # save visualization as png image
+    bg = "transparent", # make background transparent
+    width = 1192, # set width
+    height = 1192, # set height
+    res = 192, # set image resolution
+    unit = "px") # use pixels as unit
+plot(hexplot) # plot the visualization to save as png
+dev.off() # finalize and close plot
 ```
 
 # Visualization 2.
@@ -84,7 +93,7 @@ ggplot(data = personal_data_clean, # create base ggplot layer with clean df
 #| warning: false # remove warning messages when rendered
 #| fig-height: 5 # custom figure height
 #| fig-width: 5 # custom figure width
-ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
+corrmatrix <- ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
        method = c("pairwise", "spearman"), # choose method of correlation on data
        low = "#8500E9", # set negative correlation color
        mid = "#C0CDFF", # set close to 0 correlation color
@@ -93,6 +102,15 @@ ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
   theme(text = element_text(size = 30), # set font size
         plot.background = element_rect(fill = "#F5F3EF"), # set background color
         legend.position = "top") # put legend at top
+
+png("vizualization2_corrmatrix.png", # save visualization as png image
+    bg = "transparent", # make background transparent
+    width = 1192, # set width
+    height = 1192, # set height
+    res = 192, # set image resolution
+    unit = "px") # use pixels as unit
+plot(corrmatrix) # plot the visualization to save as png
+dev.off() # finalize and close plot
 ```
 
 # Visualization 3.
@@ -101,7 +119,7 @@ ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
 #| label: time series class+game
 coeff <- 18 # define coefficient for later use
 
-ggplot(data = personal_data_clean, # create base ggplot layer with clean df
+timeseries <- ggplot(data = personal_data_clean, # create base ggplot layer with clean df
        aes(x = Date)) + # set x-axis as date to create time series
   geom_line(aes(y = Class), # create line for time in class
             color = "#A0A0A0", # set color
@@ -131,9 +149,20 @@ ggplot(data = personal_data_clean, # create base ggplot layer with clean df
                                    color = "#39240A"),
         axis.line = element_blank() # remove axis lines
        )
+
+png("vizualization3_timeseries.png", # save visualization as png image
+    bg = "transparent", # make background transparent
+    width = 1344, # set width
+    height = 960, # set height
+    res = 192, # set image resolution
+    unit = "px") # use pixels as unit
+plot(timeseries) # plot the visualization to save as png
+dev.off() # finalize and close plot
+
+print(timeseries)
 ```
 
-## Infographic Planning Notes
+### Infographic planning brainstorm notes
 
 **Fonts** - Brothers, Sabbath Black
 
@@ -148,3 +177,19 @@ Symbol accents: \~wheat" B4A073" \~black "0F0F0F" \~cream "F5F3EF" \~grey "A0A0A
 Font \~brown "39240A"
 
 Shiny button \~Dgrey "333333" \~black "0F0F0F"
+
+# Write-up
+
+## General Information about design and visualization
+
+patterns highlighting in each + why
+
+outside of data viz, what aesthetic (color, font, arrangement) choices and why? What way do your choices contribute to a conmpelling/interesting narrative?
+
+## Sources and process
+
+for each viz describe examples that imspired that viz (cite author)
+
+describe coding process, ex. "did you have to clean up/sammarize data before you started? Which geoms did you start with? What geoms did u end up using and why?
+
+describe tools used: other people's code? Google/StackOverflow?
