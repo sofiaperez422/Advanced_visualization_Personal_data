@@ -41,8 +41,9 @@ personal_data_clean <- personal_data |> # create clean data frame of personal da
 
 ```{r}
 #| label: hexplot class+game
-#| fig-height: 6 # set custom figure height
-#| fig-width: 6 # set custom figure width
+#| message: false
+#| fig-height: 6
+#| fig-width: 6
 hexplot <- ggplot(data = personal_data_clean, # create base ggplot layer with clean df
        aes(x = Class, # set x-axis
            y = Game)) + # set y-axis
@@ -76,14 +77,9 @@ hexplot <- ggplot(data = personal_data_clean, # create base ggplot layer with cl
            size = 12, # set size
            family = "belle") # set font
  
-png("vizualization1_hexplot.png", # save visualization as png image
-    bg = "transparent", # make background transparent
-    width = 1192, # set width
-    height = 1192, # set height
-    res = 192, # set image resolution
-    unit = "px") # use pixels as unit
-plot(hexplot) # plot the visualization to save as png
-dev.off() # finalize and close plot
+ggsave(filename = here("images", "hexplot.png")) # save as png in images folder
+
+plot(hexplot) # display plot output
 ```
 
 # Visualization 2.
@@ -103,20 +99,16 @@ corrmatrix <- ggcorr(data = personal_data_clean, # create correlation heatmap wi
         plot.background = element_rect(fill = "#F5F3EF"), # set background color
         legend.position = "top") # put legend at top
 
-png("vizualization2_corrmatrix.png", # save visualization as png image
-    bg = "transparent", # make background transparent
-    width = 1192, # set width
-    height = 1192, # set height
-    res = 192, # set image resolution
-    unit = "px") # use pixels as unit
-plot(corrmatrix) # plot the visualization to save as png
-dev.off() # finalize and close plot
+ggsave(filename = here("images", "corrmatrix.png")) # save as png in images folder
+
+plot(corrmatrix) # display plot output
 ```
 
 # Visualization 3.
 
 ```{r}
 #| label: time series class+game
+#| message: false
 coeff <- 18 # define coefficient for later use
 
 timeseries <- ggplot(data = personal_data_clean, # create base ggplot layer with clean df
@@ -150,16 +142,9 @@ timeseries <- ggplot(data = personal_data_clean, # create base ggplot layer with
         axis.line = element_blank() # remove axis lines
        )
 
-png("vizualization3_timeseries.png", # save visualization as png image
-    bg = "transparent", # make background transparent
-    width = 1344, # set width
-    height = 960, # set height
-    res = 192, # set image resolution
-    unit = "px") # use pixels as unit
-plot(timeseries) # plot the visualization to save as png
-dev.off() # finalize and close plot
+ggsave(filename = here("images", "timeseries.png")) # save as png in images folder
 
-print(timeseries)
+plot(timeseries) # display plot output
 ```
 
 ### Infographic planning brainstorm notes
