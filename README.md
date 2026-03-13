@@ -18,4 +18,4 @@ The images folder includes the finalized visualizations saved as png images.
 
 File: https://sofiaperez422.github.io/Advanced_visualization_Personal_data/code/advanced_visualization_code.html
 
-Infographic: 
+Infographic: https://sofiaperez422.github.io/Advanced_visualization_Personal_data/Advanced%20Visualization.pdf 
