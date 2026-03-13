@@ -14,92 +14,122 @@ library(tidyverse) # general use
 library(here) # file organization
 library(janitor) # cleaning data frames
 library(readxl) # reading excel files
-library(hexbin)
-library(ggpattern)
-library(ggthemes)
-library(magick)
-library(patchwork)
-library(showtext)
-library(sysfonts)
-library(GGally)
+library(ggpattern) # geom pattern customization
+library(ggthemes) # extra plot themes
+library(showtext) # to show custom text on plot
+library(sysfonts) # to read in custom google font
+library(GGally) # for more complex plots (correlation heatmap)
+library(labelled) # for customizaing variable labels
 font_add_google(name = "Bellefair", # Name of the font on the Google Fonts site
                 family = "belle") # Name to call the font
 showtext_auto() # automatically use showtext to render text
 
 personal_data <- read_csv(here("data",
-                               "personal_data_03072026.csv"))
-
-personal_data_clean <- personal_data |> # save personal data as object
-  clean_names() |> # clean column names
-  mutate(date_mutate = as.Date.character(date, format = "%m/%d/%Y"), # mutate date column into 
-         game_min = time_with_mobile_game_active_min,
-         class_hrs = time_in_class_lecture_hrs,
-         study_hrs = time_spent_in_study_spaces_hrs,
-         friends_hrs = time_spent_at_friends_hrs,
-         assignments = number_of_assignments_due) |>
-  select(date_mutate, game_min, class, class_hrs, study_hrs, friends_hrs, assignments)
+                               "personal_data_03072026.csv")) # save personal data as object
+personal_data_clean <- personal_data |> # create clean data frame of personal data
+  clean_names() |> # clean column names to lowercase and underscores
+  mutate(Date = as.Date.character(date, format = "%m/%d/%Y"), # mutate date column into readable dates 
+         Game = time_with_mobile_game_active_min, # creating columns with updated names, new name = old name
+         Class = time_in_class_lecture_hrs, #  new name = old name
+         Study = time_spent_in_study_spaces_hrs, #  new name = old name
+         Friends = time_spent_at_friends_hrs, #  new name = old name
+         Assignments = number_of_assignments_due) |> #  new name = old name
+  select(Date, Game, class, Class, Study, Friends, Assignments) # select columns of interest
 ```
 
 # Visualization 1.
 
 ```{r}
 #| label: hexplot class+game
-ggplot(data = personal_data_clean,
-       aes(x = class_hrs,
-           y = game_min)) +
-  geom_hex() +
-  theme_void() +
-  theme(legend.position = "none")
+#| fig-height: 6 # set custom figure height
+#| fig-width: 6 # set custom figure width
+ggplot(data = personal_data_clean, # create base ggplot layer with clean df
+       aes(x = Class, # set x-axis
+           y = Game)) + # set y-axis
+  geom_hex(bins = 11) + # customize bin number  (to smallest # that won't cut off geom shape near border)
+  scale_fill_continuous(type = "gradient", # customize color of hexbins
+                        low = "#39240A", # set low count occurence color
+                        high = "#A0A0A0") + # set higher count occurence color
+  theme_void() + # set theme to remove axis and labels
+  theme(legend.position = "none") + # remove legend
+  theme(plot.margin = margin(t = 1, # create 1 cm margin around all sides
+                             r = 1,
+                             l = 1,
+                             b = 1,
+                             unit = "cm"),
+         plot.background = element_rect(fill = "#F5F3EF")) + # set background color
+  geom_curve(x = 2.25,
+             y = 50,
+             xend = 1.5,
+             yend = 45,
+             curvature = 0.6,
+             angle = 70,
+             linewidth = 2,
+             arrow = arrow(length = unit(0.3, "cm")),
+             lineend = "round",
+             col = "#B4A073") +
+  annotate("text",
+           x = 2.6,
+           y = 47,
+           label = "Bin of count values",
+           color = "#39240A",
+           size = 15,
+           family = "belle")
 ```
 
 # Visualization 2.
 
 ```{r}
 #| label: correlation matrix
-#| warning: false
-ggcorr(data = personal_data_clean,
-       method = c("pairwise", "spearman"),
-       low = "#8500E9",
-       high = "#56E900",
-       legend.position = "left")
+#| warning: false # remove warning messages when rendered
+#| fig-height: 5 # custom figure height
+#| fig-width: 5 # custom figure width
+ggcorr(data = personal_data_clean, # create correlation heatmap with clean df
+       method = c("pairwise", "spearman"), # choose method of correlation on data
+       low = "#8500E9", # set negative correlation color
+       mid = "#C0CDFF", # set close to 0 correlation color
+       high = "#56E900") + # set positive correlation color
+   theme_minimal(base_family = "belle") + # set theme to minimal and base text font
+  theme(text = element_text(size = 30), # set font size
+        plot.background = element_rect(fill = "#F5F3EF"), # set background color
+        legend.position = "top") # put legend at top
 ```
 
 # Visualization 3.
 
 ```{r}
 #| label: time series class+game
-coeff <- 18
+coeff <- 18 # define coefficient for later use
 
-ggplot(data = personal_data_clean,
-       aes(x = date_mutate)) + 
-  geom_line(aes(y = class_hrs),
-            color = "#A0A0A0",
-            linewidth = 1) +
-  geom_line(aes(y = game_min/coeff),
-            color = "#0F0F0F",
-            linewidth = 1) +
-  scale_y_continuous(name = "Time in lecture (hrs)",
-                     sec.axis = sec_axis(~ . * coeff, 
+ggplot(data = personal_data_clean, # create base ggplot layer with clean df
+       aes(x = Date)) + # set x-axis as date to create time series
+  geom_line(aes(y = Class), # create line for time in class
+            color = "#A0A0A0", # set color
+            linewidth = 1) + # set width
+  geom_line(aes(y = Game/coeff), # create line for time spent on game and divide values to scale it to existing y-axis values of hours
+            color = "#0F0F0F", # set color
+            linewidth = 1) + # set width
+  scale_y_continuous(name = "Time in lecture (hrs)", # scale first y-axis to hours and name it and name it accordingly
+                     sec.axis = sec_axis(~ . * coeff, # scale second y-axis to minutes and name it accordingly
                                          name = "Time tracked on game (min)")) +
-  labs(x = "Date") +
-  theme_classic() +
-   theme(text = element_text(family = "belle"),
-         plot.background = element_rect(fill = "#F5F3EF"),
-         panel.background = element_rect(fill = "#F5F3EF"),
-         panel.border = element_rect(fill = NA, 
+  theme_classic() + # set theme to classic
+   theme(text = element_text(family = "belle"), # set base font
+         plot.background = element_rect(fill = "#F5F3EF"), # set entire background color
+         panel.background = element_rect(fill = "#F5F3EF"), # set plot background color
+         panel.border = element_rect(fill = NA, # create border, set color and width
                                      color = "#B4A073", 
                                      linewidth = 5),
-         axis.title.x = element_text(size = 40,
+         axis.title.x = element_text(size = 40, # set size and color of bottom axis
                                    color = "#39240A"),
-       axis.title.y.left = element_text(size = 35,
+       axis.title.y.left = element_text(size = 35, # set size and color of left axis
                                    color = "#A0A0A0"),
-       axis.title.y.right = element_text(size = 35,
+       axis.title.y.right = element_text(size = 35, # set size and color of right axis
                                    color = "#0F0F0F"),
-       axis.text.x = element_text(size = 30,
+       axis.text.x = element_text(size = 30, # set size and color of x-axis ticks text
                                    color = "#39240A"),
-       axis.text.y = element_text(size = 35,
+       axis.text.y = element_text(size = 35, # set size and color of y-axis ticks text
                                    color = "#39240A"),
-       axis.line = element_blank()
+       axis.line = element_blank() # remove axis lines
        )
 ```
 
